@@ -1,11 +1,10 @@
 import sys
-from PyQt5.QtWidgets import (QWidget, QToolTip,
-    QPushButton, QApplication)
+from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont
+from PyQt5.QtCore import QCoreApplication
 
 
 class Example(QWidget):
-
     def __init__(self):
         super().__init__()
 
@@ -20,18 +19,31 @@ class Example(QWidget):
 
         # 创建一个PushButton并为他设置一个tooltip
         btn = QPushButton('Button', self)
+        btn.clicked.connect(QCoreApplication.instance().quit)
         btn.setToolTip('This is a <b>QPushButton</b> widget')
 
-        # btn.sizeHint()显示默认尺寸
-        # btn.resize(btn.sizeHint())
+        btn.setGeometry(0, 0, 59, 49)
 
-        # 移动窗口的位置
-        # btn.move(0, 0)
-        btn.setGeometry(0,0,59,49)
-
-        self.setGeometry(300, 300, 300, 200)
+        self.center()
+        self.resize(200,200)
+        # self.setGeometry(300, 300, 300, 200)
         self.setWindowTitle('Tooltips')
         self.show()
+
+    def center(self):
+        qr=self.frameGeometry()
+        cp=QDesktopWidget().availableGeometry().center()
+
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
+    def closeEvent(self, QCloseEvent):
+        reply = QMessageBox.question(self, 'Message', "Are you  OK?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            QCloseEvent.accept()
+        else:
+            QCloseEvent.ignore()
 
 
 if __name__ == '__main__':
