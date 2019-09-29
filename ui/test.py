@@ -11,9 +11,6 @@ class Example(QWidget):
         self.initUI()  # 界面绘制交给InitUi方法
 
     def initUI(self):
-        # 这种静态的方法设置一个用于显示工具提示的字体。我们使用10px滑体字体。
-        QToolTip.setFont(QFont('SansSerif', 10))
-
         # 创建一个提示，我们称之为settooltip()方法。我们可以使用丰富的文本格式
         self.setToolTip('This is a <b>QWidget</b> widget')
 
@@ -25,15 +22,14 @@ class Example(QWidget):
         btn.setGeometry(0, 0, 59, 49)
 
         self.center()
-        self.resize(200,200)
+        self.resize(200, 200)
         # self.setGeometry(300, 300, 300, 200)
         self.setWindowTitle('Tooltips')
         self.show()
 
     def center(self):
-        qr=self.frameGeometry()
-        cp=QDesktopWidget().availableGeometry().center()
-
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
