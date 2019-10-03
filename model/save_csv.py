@@ -7,7 +7,7 @@ def read_sub():
 
 
 def create_csv(name, sum_csv):
-    path = "./res/" + name + ".csv"
+    path = "../res/" + name + ".csv"
     with open(path, 'w', encoding="utf-8", newline='') as f:
         csv_write = csv.writer(f)
         for key in sum_csv:
