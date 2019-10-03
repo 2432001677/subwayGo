@@ -1,4 +1,6 @@
-import csv, pickle, os
+import csv
+import os
+import pickle
 
 
 class Subway:
@@ -6,7 +8,17 @@ class Subway:
         self.name = name
         self.lines = {}
         self.stations = {}
+        self._station = []
         self._generate_caches()
+
+    def get_station(self, name):  # 得到站点对象
+        for s in self._station:
+            if s.name == name:
+                return s
+        return None
+
+    def get_line_stations(self, line):  # 返回整条线路的站点信息
+        return self.lines[line]
 
     def _generate_caches(self):
         self._load_stations()
@@ -19,6 +31,9 @@ class Subway:
         else:
             with open(path, 'rb') as f:
                 self.stations = pickle.load(f)
+        self.stations: dict[str:tuple]
+        for (key, inf) in self.stations.items():
+            self._station.append(Station(key, inf))
 
     def _load_lines(self):
         path = "../res/" + self.name + "_lines.pk"
@@ -62,10 +77,33 @@ class Subway:
         os.remove("../res/" + self.name + "_lines.pk")
 
 
-# if __name__ == '__main__':
-#     sub = Subway("北京")
-#     sub.delete_cache()
-#     sub.__init__("北京")
-#     print(len(sub.lines))
-#     for (line, station) in sub.lines.items():
-#         print(line, station)
+class Station:
+    def __init__(self, key, inf):
+        self.name = key
+        self.inf = {x[0]: x[1] for x in inf}
+
+    def __contains__(self, item):
+        for line in self.inf.keys():
+            if line == item:
+                return True
+        return False
+
+    def __sub__(self, other):
+        value = 9999
+        self.inf: dict[str, tuple]
+        for line in self.inf.keys():
+            if line in other:
+                t = self.inf[line][0] - other.inf[line][0]
+                t = t if t > 0 else -t
+                if t < value:
+                    value = t
+        return value
+
+
+if __name__ == '__main__':
+    sub = Subway("北京")
+    s = sub.get_station("积水潭")
+    print(s.inf)
+    t = sub.get_station("西直门")
+    print(t.inf)
+    print(s - t)
