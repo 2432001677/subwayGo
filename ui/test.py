@@ -1,10 +1,10 @@
 import sys
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import *
 from PyQt5.QtCore import QCoreApplication
 
 
-class Example(QWidget):
+class Example(QMainWindow):
     def __init__(self):
         super().__init__()
 
@@ -60,6 +60,12 @@ class Examp2(QMainWindow):  # 状态栏
 
     def initUI(self):
         self.statusBar().showMessage("ready")
+        exitAction=QAction('Exit',self)
+        exitAction.setStatusTip("exit app")
+        exitAction.triggered.connect(qApp.quit)
+        menubar=self.menuBar()
+        fileMenu=menubar.addMenu("File")
+        fileMenu.addAction(exitAction)
         self.setGeometry(400,400,400,400)
         self.setWindowTitle("title")
         self.show()
