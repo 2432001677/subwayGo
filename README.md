@@ -1,5 +1,5 @@
 # subwayGo
-show the shorttest path to destination station by subway(the first project in SE class)
+show the shortest path to destination station by subway(the first project in SE class)
 
 # TO-DO
 >- [x] read subway system file by ".csv"  
