@@ -54,6 +54,8 @@ class Ui_MainWindow(object):
         self.box_subway = QtWidgets.QComboBox(self.centralwidget)
         self.box_subway.setGeometry(QtCore.QRect(580, 10, 80, 31))
 
+        self.bt_best_route.clicked.connect(self.best_path)
+
         self.box_subway.addItems(self.sub_control.subway_dirs)
         self.box_start_route.addItems(self.sub_control.routes_start.routes_name)
         self.box_end_route.addItems(self.sub_control.routes_end.routes_name)
@@ -244,13 +246,18 @@ class Ui_MainWindow(object):
         self.label_end_pos.setObjectName("label_end_pos")
         self.bt_swap = QtWidgets.QToolButton(self.centralwidget)
         self.bt_swap.setGeometry(QtCore.QRect(30, 140, 41, 51))
-        self.bt_swap.setText("")
+        # self.bt_swap.setText("")
+        self.bt_swap.clicked.connect(self.swap_station)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("ui/swap.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.bt_swap.setIcon(icon)
         self.bt_swap.setIconSize(QtCore.QSize(50, 50))
         self.bt_swap.setObjectName("bt_swap")
         self.listView = QtWidgets.QListView(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        font.setStyleStrategy(QtGui.QFont.PreferDefault)
+        self.listView.setFont(font)
         self.listView.setGeometry(QtCore.QRect(20, 250, 485, 281))
         self.listView.setObjectName("listView")
 
@@ -264,7 +271,12 @@ class Ui_MainWindow(object):
         self.bt_whole_route.setObjectName("bt_whole_route")
         self.bt_whole_route.clicked.connect(self.search_whole_route)
         self.tableView = QtWidgets.QTableView(self.centralwidget)
-        self.tableView.setGeometry(QtCore.QRect(530, 250, 242, 281))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setStyleStrategy(QtGui.QFont.PreferDefault)
+        self.tableView.setFont(font)
+        self.tableView.setGeometry(QtCore.QRect(530, 250, 255, 281))
         self.tableView.setObjectName("tableView")
 
         MainWindow.setCentralWidget(self.centralwidget)
@@ -328,6 +340,23 @@ class Ui_MainWindow(object):
             self.sub_control.select_route_end(self.box_end_route.currentIndex())
             box.addItems(self.sub_control.stations_end)
 
+    def best_path(self):
+        list_model=QtCore.QStringListModel()
+        list=["12","23","34"]
+        list_model.setStringList(list)
+        self.listView.setModel(list_model)
+
+    def swap_station(self):  # 交换起点和终点
+        current_start_route=self.box_start_route.currentIndex()
+        current_start_station=self.box_start_station.currentIndex()
+        current_end_station=self.box_end_station.currentIndex()
+
+        self.box_start_route.setCurrentIndex(self.box_end_route.currentIndex())
+        self.box_end_route.setCurrentIndex(current_start_route)
+
+        self.box_start_station.setCurrentIndex(current_end_station)
+        self.box_end_station.setCurrentIndex(current_start_station)
+
     def search_whole_route(self):
         stations_name_status=self.sub_control.routes_start.get_stations_name_status(self.box_routes.currentIndex())
         self.whole_station_model = QtGui.QStandardItemModel(len(stations_name_status), 2)
@@ -337,3 +366,4 @@ class Ui_MainWindow(object):
             self.whole_station_model.setItem(j, 0, QtGui.QStandardItem(stations_name_status[j][0]))
             self.whole_station_model.setItem(j, 1, QtGui.QStandardItem(stations_name_status[j][1]))
         self.tableView.setModel(self.whole_station_model)
+
