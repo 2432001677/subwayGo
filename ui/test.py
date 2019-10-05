@@ -20,15 +20,15 @@ class Example(QMainWindow):
         # btn.setToolTip('This is a <b>QPushButton</b> widget')
         # btn.setGeometry(0, 0, 59, 49)
 
-        ok_bt=QPushButton("OK")
-        cancel_bt=QPushButton("Cancel")
+        ok_bt = QPushButton("OK")
+        cancel_bt = QPushButton("Cancel")
 
-        hbox=QHBoxLayout()
+        hbox = QHBoxLayout()
         # hbox.addStretch(1)
         hbox.addWidget(ok_bt)
         hbox.addWidget(cancel_bt)
 
-        vbox=QVBoxLayout()
+        vbox = QVBoxLayout()
         # vbox.addStretch(1)
         vbox.addLayout(hbox)
 
@@ -60,13 +60,13 @@ class Examp2(QMainWindow):  # 状态栏
 
     def initUI(self):
         self.statusBar().showMessage("ready")
-        exitAction=QAction('Exit',self)
+        exitAction = QAction('Exit', self)
         exitAction.setStatusTip("exit app")
         exitAction.triggered.connect(qApp.quit)
-        menubar=self.menuBar()
-        fileMenu=menubar.addMenu("File")
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu("File")
         fileMenu.addAction(exitAction)
-        self.setGeometry(400,400,400,400)
+        self.setGeometry(400, 400, 400, 400)
         self.setWindowTitle("title")
         self.show()
 
@@ -75,5 +75,5 @@ if __name__ == '__main__':
     # 创建应用程序和对象
     app = QApplication(sys.argv)
     # ex = Example()
-    ex=Examp2()
+    ex = Examp2()
     sys.exit(app.exec_())
