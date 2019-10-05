@@ -3,7 +3,51 @@ import os
 import pickle
 
 
-class Subway:
+class Station:
+    def __init__(self, subway, key, inf):
+        self.subway = subway
+        self.name = key
+        self.inf = {x[0]: x[1] for x in inf}
+        self.routes = None
+
+    def __contains__(self, item):
+        for line in self.inf.keys():
+            if line == item:
+                return True
+        return False
+
+    def _is_circle(self, route1, route2) -> bool:
+        if not self.routes:
+            with open("../res/" + self.subway + "/lines.pk", 'rb') as f:
+                self.routes = pickle.load(f)
+        route1 = [x[0] for x in self.routes[route1]]
+        route2 = [x[0] for x in reversed(self.routes[route2])]
+        return route1 == route2
+
+    def __sub__(self, other):
+        value = 9999
+        min_line = None
+        self.inf: dict
+        for line in self.inf.keys():
+            if line in other:
+                t = self.inf[line][0] - other.inf[line][0]
+                t = t if t > 0 else -t
+                if t < value:
+                    value = t
+                    min_line = line
+                elif t == value and self._is_circle(min_line, line):  # 解决要命的特殊情况——环路问题
+                    temp = len(self.routes[line]) - value
+                    if value <= temp:
+                        if self.inf[line][0] - other.inf[line][0] < 0:
+                            min_line = line
+                    else:
+                        value = temp
+                        if self.inf[line][0] - other.inf[line][0] > 0:
+                            min_line = line
+        return value
+
+
+class SubwayCache:
     def __init__(self, name):
         self.name = name
         self.lines = {}
@@ -11,7 +55,7 @@ class Subway:
         self._station = []
         self._generate_caches()
 
-    def get_station(self, name) -> str:  # 得到站点对象
+    def get_station(self, name) -> Station:  # 得到站点对象
         for s in self._station:
             if s.name == name:
                 return s
@@ -21,11 +65,14 @@ class Subway:
         return self.lines[line]
 
     def _generate_caches(self):
+        path = "../res/" + self.name
+        if not os.path.exists(path):
+            os.mkdir(path)
         self._load_stations()
         self._load_lines()
 
     def _load_stations(self):
-        path = "../res/" + self.name + "_stations.pk"
+        path = "../res/" + self.name + "/stations.pk"
         if not os.path.exists(path):
             self._generate_stations(path)
         else:
@@ -36,7 +83,7 @@ class Subway:
             self._station.append(Station(self.name, key, inf))
 
     def _load_lines(self):
-        path = "../res/" + self.name + "_lines.pk"
+        path = "../res/" + self.name + "/lines.pk"
         if not os.path.exists(path):
             self._generate_lines(path)
         else:
@@ -77,53 +124,8 @@ class Subway:
         os.remove("../res/" + self.name + "_lines.pk")
 
 
-class Station:
-    def __init__(self, subway, key, inf):
-        self.subway = subway
-        self.name = key
-        self.inf = {x[0]: x[1] for x in inf}
-        self.routes = None
-
-    def __contains__(self, item):
-        for line in self.inf.keys():
-            if line == item:
-                return True
-        return False
-
-    def _is_circle(self, route1, route2) -> bool:
-        if not self.routes:
-            with open("../res/" + self.subway + "_lines.pk", 'rb') as f:
-                self.routes = pickle.load(f)
-        route1 = [x[0] for x in self.routes[route1]]
-        route2 = [x[0] for x in reversed(self.routes[route2])]
-        return route1 == route2
-
-    def __sub__(self, other):
-        value = 9999
-        min_line = None
-        self.inf: dict
-        for line in self.inf.keys():
-            if line in other:
-                t = self.inf[line][0] - other.inf[line][0]
-                t = t if t > 0 else -t
-                if t < value:
-                    value = t
-                    min_line = line
-                elif t == value and self._is_circle(min_line, line):  # 解决烦人的特殊情况——环路问题
-                    temp = len(self.routes[line]) - value
-                    if value <= temp:
-                        if self.inf[line][0] - other.inf[line][0] < 0:
-                            min_line = line
-                    else:
-                        value = temp
-                        if self.inf[line][0] - other.inf[line][0] > 0:
-                            min_line = line
-        print(min_line)
-        return value
-
-
 if __name__ == '__main__':
-    sub = Subway("北京")
+    sub = SubwayCache("北京")
     s = sub.get_station("西直门")
     print(s.inf)
     t = sub.get_station("安定门")
