@@ -30,13 +30,13 @@ class SubwayCache:
         self.stations = {}
 
         # 所有站点
-        self._station: Station
-        self._station = []
+        self.station_obj: Station
+        self.station_obj = []
 
         self._generate_caches()
 
     def get_station(self, name) -> Station:  # 得到站点对象
-        for s in self._station:
+        for s in self.station_obj:
             if s.name == name:
                 return s
         return None
@@ -58,8 +58,9 @@ class SubwayCache:
         else:
             with open(path, 'rb') as f:
                 self.stations = pickle.load(f)
+        self.station_obj.clear()
         for (key, inf) in self.stations.items():
-            self._station.append(Station(self.name, key, inf))
+            self.station_obj.append(Station(self.name, key, inf))
 
     def _load_lines(self):
         path = os.getcwd() + "/res/" + self.name + "/lines.pk"

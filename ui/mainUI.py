@@ -341,15 +341,15 @@ class Ui_MainWindow(object):
             box.addItems(self.sub_control.stations_end)
 
     def best_path(self):
-        list_model=QtCore.QStringListModel()
-        list=["12","23","34"]
+        list_model = QtCore.QStringListModel()
+        list = self.sub_control.best_path(self.box_start_station.currentText(),self.box_end_station.currentText())
         list_model.setStringList(list)
         self.listView.setModel(list_model)
 
     def swap_station(self):  # 交换起点和终点
-        current_start_route=self.box_start_route.currentIndex()
-        current_start_station=self.box_start_station.currentIndex()
-        current_end_station=self.box_end_station.currentIndex()
+        current_start_route = self.box_start_route.currentIndex()
+        current_start_station = self.box_start_station.currentIndex()
+        current_end_station = self.box_end_station.currentIndex()
 
         self.box_start_route.setCurrentIndex(self.box_end_route.currentIndex())
         self.box_end_route.setCurrentIndex(current_start_route)
@@ -358,12 +358,12 @@ class Ui_MainWindow(object):
         self.box_end_station.setCurrentIndex(current_start_station)
 
     def search_whole_route(self):
-        stations_name_status=self.sub_control.routes_start.get_stations_name_status(self.box_routes.currentIndex())
+        stations_name_status = self.sub_control.routes_start.get_stations_name_status(self.box_routes.currentIndex())
         self.whole_station_model = QtGui.QStandardItemModel(len(stations_name_status), 2)
         self.whole_station_model.setHorizontalHeaderLabels(["站点名", "是否开通"])
-        self.whole_station_model.setVerticalHeaderLabels(self.sub_control.routes_start.get_pos(self.box_routes.currentIndex()))
+        self.whole_station_model.setVerticalHeaderLabels(
+            self.sub_control.routes_start.get_pos(self.box_routes.currentIndex()))
         for j in range(len(stations_name_status)):
             self.whole_station_model.setItem(j, 0, QtGui.QStandardItem(stations_name_status[j][0]))
             self.whole_station_model.setItem(j, 1, QtGui.QStandardItem(stations_name_status[j][1]))
         self.tableView.setModel(self.whole_station_model)
-
