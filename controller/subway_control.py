@@ -56,6 +56,13 @@ class SubwayControl:
         pass
 
     def best_path(self, start_station, end_station):
+        res = []
+        if not self.all_station_obj[start_station].is_open():
+            res.append("起点未开通")
+        if not self.all_station_obj[end_station].is_open():
+            res.append("终点未开通")
+        if len(res) > 0:
+            return res
         start_obj = self.all_station_obj[start_station]
         path = {x: start_station for x in self.all_station}  # 记录路径
         self.distance = {x: [start_obj - self.all_station_obj[x], 0] for x in self.all_station}  # 记录离原点最短距离,以及是否被访问
@@ -69,15 +76,13 @@ class SubwayControl:
                     path[s] = min_station
             self.distance[min_station][1] = 1
             min_station = self._find_shortest_station()
-        print(self.distance[end_station][0])
         line = [end_station]
         while end_station != start_station:
             end_station = path[end_station]
             line.append(end_station)
+        line = list(reversed(line))
+        n=len(line)-1
         print(line)
-
-        return ["ok"]
-
-
-if __name__ == '__main__':
-    sub = SubwayControl()
+        for i in range(n):
+            line[i] = self.all_station_obj[line[i]].get_past_stations(self.all_station_obj[line[i + 1]])
+        return line
