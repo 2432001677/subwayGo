@@ -8,6 +8,6 @@ show the shortest path to destination station by subway(the first project in SE 
 >- [x] consider how to solve circle route problem  
 >- [x] design UI  
 >- [x] finished function to show routes information  
->- [ ] finished function to show best path to destination  
+>- [x] finished function to show best path to destination  
 >- [ ] bug fix and optimize  
 

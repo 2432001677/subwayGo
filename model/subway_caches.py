@@ -1,7 +1,6 @@
 import csv
 import os
 import pickle
-
 from model.stations import Station
 
 
@@ -100,8 +99,8 @@ class SubwayCache:
             pickle.dump(self.lines, f)
 
     def delete_cache(self):
-        os.remove(os.getcwd()+"/res/" + self.name + "/stations.pk")
-        os.remove(os.getcwd()+"/res/" + self.name + "/lines.pk")
+        os.remove(os.getcwd() + "/res/" + self.name + "/stations.pk")
+        os.remove(os.getcwd() + "/res/" + self.name + "/lines.pk")
 
 
 if __name__ == '__main__':

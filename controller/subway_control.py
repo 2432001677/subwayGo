@@ -18,7 +18,7 @@ class SubwayControl:
         self.distance = {}
         self.search_system()
 
-    def select_route_start(self, route_index):  # 获得当前线路下所有站点
+    def select_route_start(self, route_index):  # 获得当前线路下所有站点  列表
         self.stations_start = self.routes_start.get_stations_name(route_index)
 
     def select_route_end(self, route_index):
@@ -81,8 +81,9 @@ class SubwayControl:
             end_station = path[end_station]
             line.append(end_station)
         line = list(reversed(line))
-        n=len(line)-1
-        print(line)
+        n = len(line) - 1
         for i in range(n):
             line[i] = self.all_station_obj[line[i]].get_past_stations(self.all_station_obj[line[i + 1]])
+        del line[n]
+
         return line
