@@ -7,7 +7,6 @@
 class Route:
     def __init__(self, routes):
         self.routes = routes
-        # self.routes_name = list(routes)
         self.routes_name = list(routes)
 
     def get_stations_name(self, index):

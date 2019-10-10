@@ -80,27 +80,22 @@ class Station:  # 站点对象
         return False
 
     def get_past_stations(self, other):
-        num = self - other
-        route = self.min_line
+        self - other
+        route, s = self.min_line, []
         route_inf = self.routes[self.min_line]
         route_stations = [x[0] for x in route_inf]
-        s = []
-        if self._is_circle(self.min_line):
-            if self.inf[route][0] < other.inf[route][0]:  # 不经过起点
-                s.extend(route_stations[self.inf[route][0]:other.inf[route][0]])
-                s.append(other.name)
-            else:
+
+        if self.inf[route][0] < other.inf[route][0]:
+            s.extend(route_stations[self.inf[route][0]:other.inf[route][0]])
+            s.append(other.name)
+        else:
+            if self._is_circle(self.min_line):
                 s.extend(route_stations[self.inf[route][0]:])
                 s.extend(route_stations[:other.inf[route][0] + 1])
-        else:
-            if self.inf[route][0] < other.inf[route][0]:  # 从起点到终点方向
-                s.extend(route_stations[self.inf[route][0]:other.inf[route][0]])
-                s.append(other.name)
-            else:  # 从终点到起点方向
+            else:
                 s.extend(route_stations[other.inf[route][0]:self.inf[route][0]])
                 s.append(self.name)
                 s = list(reversed(s))
-        res = "->".join(s)
-        res = route + ": " + res
+        res = route + ": " + "->".join(s)
 
         return res

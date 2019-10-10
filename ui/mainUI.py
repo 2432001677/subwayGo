@@ -17,13 +17,13 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(789, 575)
+        MainWindow.resize(900, 580)
         MainWindow.setToolTip("")
         MainWindow.setStatusTip("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(100, 100, 391, 131))
+        self.frame.setGeometry(QtCore.QRect(420, 80, 391, 131))
         font = QtGui.QFont()
         font.setStyleStrategy(QtGui.QFont.PreferDefault)
         self.frame.setFont(font)
@@ -52,8 +52,7 @@ class Ui_MainWindow(object):
         self.bt_best_route.setGeometry(QtCore.QRect(290, 50, 81, 31))
         self.bt_best_route.setObjectName("bt_best_route")
         self.box_subway = QtWidgets.QComboBox(self.centralwidget)
-        self.box_subway.setGeometry(QtCore.QRect(580, 10, 80, 31))
-
+        self.box_subway.setGeometry(QtCore.QRect(650, 10, 80, 31))
         self.bt_best_route.clicked.connect(self.best_path)
 
         self.box_subway.addItems(self.sub_control.subway_dirs)
@@ -217,7 +216,7 @@ class Ui_MainWindow(object):
         # self.box_subway.setFont(font)
         self.box_subway.setObjectName("box_subway")
         self.label_subway = QtWidgets.QLabel(self.centralwidget)
-        self.label_subway.setGeometry(QtCore.QRect(670, 10, 131, 31))
+        self.label_subway.setGeometry(QtCore.QRect(750, 10, 131, 31))
         font = QtGui.QFont()
         font.setPointSize(18)
         font.setBold(True)
@@ -228,7 +227,7 @@ class Ui_MainWindow(object):
         self.label_subway.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse)
         self.label_subway.setObjectName("label_subway")
         self.label_start_pos = QtWidgets.QLabel(self.centralwidget)
-        self.label_start_pos.setGeometry(QtCore.QRect(10, 100, 91, 41))
+        self.label_start_pos.setGeometry(QtCore.QRect(320, 80, 91, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -236,7 +235,7 @@ class Ui_MainWindow(object):
         self.label_start_pos.setFont(font)
         self.label_start_pos.setObjectName("label_start_pos")
         self.label_end_pos = QtWidgets.QLabel(self.centralwidget)
-        self.label_end_pos.setGeometry(QtCore.QRect(0, 190, 101, 51))
+        self.label_end_pos.setGeometry(QtCore.QRect(310, 170, 101, 51))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -245,8 +244,7 @@ class Ui_MainWindow(object):
         self.label_end_pos.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.label_end_pos.setObjectName("label_end_pos")
         self.bt_swap = QtWidgets.QToolButton(self.centralwidget)
-        self.bt_swap.setGeometry(QtCore.QRect(30, 140, 41, 51))
-        # self.bt_swap.setText("")
+        self.bt_swap.setGeometry(QtCore.QRect(340, 120, 41, 51))
         self.bt_swap.clicked.connect(self.swap_station)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("ui/swap.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -255,18 +253,18 @@ class Ui_MainWindow(object):
         self.bt_swap.setObjectName("bt_swap")
         self.listView = QtWidgets.QListView(self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(15)
+        font.setPointSize(12)
         font.setStyleStrategy(QtGui.QFont.PreferDefault)
         self.listView.setFont(font)
-        self.listView.setGeometry(QtCore.QRect(20, 250, 485, 281))
+        self.listView.setGeometry(QtCore.QRect(300, 250, 570, 281))
         self.listView.setObjectName("listView")
 
         self.box_routes = QtWidgets.QComboBox(self.centralwidget)
-        self.box_routes.setGeometry(QtCore.QRect(540, 160, 121, 41))
+        self.box_routes.setGeometry(QtCore.QRect(25, 20, 121, 41))
         self.box_routes.setObjectName("box_best_routes")
         self.box_routes.addItems(self.sub_control.routes_start.routes_name)
         self.bt_whole_route = QtWidgets.QPushButton(self.centralwidget)
-        self.bt_whole_route.setGeometry(QtCore.QRect(680, 160, 91, 41))
+        self.bt_whole_route.setGeometry(QtCore.QRect(160, 20, 110, 41))
         self.bt_whole_route.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
         self.bt_whole_route.setObjectName("bt_whole_route")
         self.bt_whole_route.clicked.connect(self.search_whole_route)
@@ -276,7 +274,7 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setStyleStrategy(QtGui.QFont.PreferDefault)
         self.tableView.setFont(font)
-        self.tableView.setGeometry(QtCore.QRect(530, 250, 255, 281))
+        self.tableView.setGeometry(QtCore.QRect(20, 80, 255, 450))
         self.tableView.setObjectName("tableView")
 
         MainWindow.setCentralWidget(self.centralwidget)
@@ -342,8 +340,10 @@ class Ui_MainWindow(object):
 
     def best_path(self):
         list_model = QtCore.QStringListModel()
-        list = self.sub_control.best_path(self.box_start_station.currentText(),self.box_end_station.currentText())
-        list_model.setStringList(list)
+        path = ["换乘路线信息及经过站点："]
+        path.extend(
+            self.sub_control.best_path(self.box_start_station.currentText(), self.box_end_station.currentText()))
+        list_model.setStringList(path)
         self.listView.setModel(list_model)
 
     def swap_station(self):  # 交换起点和终点
