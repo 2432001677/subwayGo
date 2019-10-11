@@ -53,7 +53,10 @@ class SubwayCache:
     def _load_stations(self):
         path = os.getcwd() + "/res/" + self.name + "/stations.pk"
         if not os.path.exists(path):
-            self._generate_stations(path)
+            try:
+                self._generate_stations(path)
+            except Exception:
+                raise Exception("csv文件格式错误")
         else:
             with open(path, 'rb') as f:
                 self.stations = pickle.load(f)
@@ -64,7 +67,10 @@ class SubwayCache:
     def _load_lines(self):
         path = os.getcwd() + "/res/" + self.name + "/lines.pk"
         if not os.path.exists(path):
-            self._generate_lines(path)
+            try:
+                self._generate_lines(path)
+            except Exception:
+                raise Exception("csv文件格式错误")
         else:
             with open(path, 'rb') as f:
                 self.lines = pickle.load(f)

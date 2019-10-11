@@ -87,3 +87,6 @@ class SubwayControl:
         del line[n]
 
         return line
+
+    def delete_pk(self):
+        self.current_subway_cache.delete_cache()

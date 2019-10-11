@@ -1,7 +1,7 @@
 import csv
 
 
-def read_sub():
+def read_sub():  # 输入线路名，开通状态，站点
     list = input().split()
     return list[0], list[1], list[2:]
 

@@ -5,10 +5,13 @@
 # Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
-
+import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from controller.subway_control import SubwayControl
+import platform
+
+from model.subway_caches import SubwayCache
 
 
 class Ui_MainWindow(object):
@@ -289,8 +292,10 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.load_subway = QtWidgets.QAction(MainWindow)
         self.load_subway.setObjectName("load_subway")
+        self.load_subway.triggered.connect(self.load_file)
         self.delete_subway = QtWidgets.QAction(MainWindow)
         self.delete_subway.setObjectName("delete_subway")
+        self.delete_subway.triggered.connect(self.delete_system)
         self.menu.addAction(self.load_subway)
         self.menu.addAction(self.delete_subway)
         self.menubar.addAction(self.menu.menuAction())
@@ -314,7 +319,7 @@ class Ui_MainWindow(object):
         self.bt_whole_route.setText(_translate("MainWindow", "查询线路信息"))
         self.menu.setTitle(_translate("MainWindow", "选项"))
         self.load_subway.setText(_translate("MainWindow", "加载地铁系统"))
-        self.delete_subway.setText(_translate("MainWindow", "删除地铁系统"))
+        self.delete_subway.setText(_translate("MainWindow", "删除当前系统"))
 
     def changed_system(self):  # 改变地铁系统
         self.box_start_route.clear()
@@ -367,3 +372,35 @@ class Ui_MainWindow(object):
             self.whole_station_model.setItem(j, 0, QtGui.QStandardItem(stations_name_status[j][0]))
             self.whole_station_model.setItem(j, 1, QtGui.QStandardItem(stations_name_status[j][1]))
         self.tableView.setModel(self.whole_station_model)
+
+    def load_file(self):
+        file_name_choose, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", "\\",
+                                                                    "Text Files (*.csv)")  # 设置文件扩展名过滤,用双分号间隔
+        try:
+            if platform.system() == "Windows":
+                file_name = file_name_choose.replace("/", "\\")
+                os.system("copy " + file_name + " " + os.getcwd() + "\\res")
+            else:
+                os.system("cp " + file_name_choose + " " + os.getcwd() + "/res")
+        except Exception as e:
+            print("error", e)
+        file_name_choose = str(file_name_choose)
+        file_name = file_name_choose.split('/')
+        try:
+            SubwayCache(file_name[len(file_name) - 1][:-4])
+        except Exception as e:
+            print(e)
+        self.sub_control.search_system()
+        self.box_subway.clear()
+        self.box_subway.addItems(self.sub_control.subway_dirs)
+
+    def delete_system(self):
+        self.sub_control.delete_pk()
+        self.sub_control.search_system()
+        self.box_subway.clear()
+        self.tableView.clearSpans()
+        self.box_subway.addItems(self.sub_control.subway_dirs)
+        try:
+            self.changed_system()
+        except Exception as e:
+            print(e)
