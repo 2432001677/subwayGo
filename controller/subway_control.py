@@ -41,7 +41,8 @@ class SubwayControl:
                 if os.path.exists(path + i + "/lines.pk") and os.path.exists(path + i + "/stations.pk"):
                     subways.append(i)
         self.subway_dirs = subways
-        self.select_subway(0)
+        if len(self.subway_dirs)>0:
+            self.select_subway(0)
 
     def _find_shortest_station(self) -> str:
         min = 9999

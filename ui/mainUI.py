@@ -58,11 +58,12 @@ class Ui_MainWindow(object):
         self.box_subway.setGeometry(QtCore.QRect(650, 10, 80, 31))
         self.bt_best_route.clicked.connect(self.best_path)
 
-        self.box_subway.addItems(self.sub_control.subway_dirs)
-        self.box_start_route.addItems(self.sub_control.routes_start.routes_name)
-        self.box_end_route.addItems(self.sub_control.routes_end.routes_name)
-        self.box_start_station.addItems(self.sub_control.stations_start)
-        self.box_end_station.addItems(self.sub_control.stations_end)
+        if len(self.sub_control.subway_dirs) > 0:
+            self.box_subway.addItems(self.sub_control.subway_dirs)
+            self.box_start_route.addItems(self.sub_control.routes_start.routes_name)
+            self.box_end_route.addItems(self.sub_control.routes_end.routes_name)
+            self.box_start_station.addItems(self.sub_control.stations_start)
+            self.box_end_station.addItems(self.sub_control.stations_end)
         self.box_subway.currentIndexChanged.connect(self.changed_system)
         self.box_start_route.currentIndexChanged.connect(lambda: self.changed_route(self.box_start_station, 0))
         self.box_end_route.currentIndexChanged.connect(lambda: self.changed_route(self.box_end_station, 1))
@@ -265,7 +266,8 @@ class Ui_MainWindow(object):
         self.box_routes = QtWidgets.QComboBox(self.centralwidget)
         self.box_routes.setGeometry(QtCore.QRect(25, 20, 121, 41))
         self.box_routes.setObjectName("box_best_routes")
-        self.box_routes.addItems(self.sub_control.routes_start.routes_name)
+        if len(self.sub_control.subway_dirs) > 0:
+            self.box_routes.addItems(self.sub_control.routes_start.routes_name)
         self.bt_whole_route = QtWidgets.QPushButton(self.centralwidget)
         self.bt_whole_route.setGeometry(QtCore.QRect(160, 20, 110, 41))
         self.bt_whole_route.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
@@ -374,22 +376,21 @@ class Ui_MainWindow(object):
         self.tableView.setModel(self.whole_station_model)
 
     def load_file(self):
+        self.box_subway.show()
         file_name_choose, _ = QtWidgets.QFileDialog.getOpenFileName(self, "选取文件", "\\",
                                                                     "Text Files (*.csv)")  # 设置文件扩展名过滤,用双分号间隔
         try:
-            if platform.system() == "Windows":
-                file_name = file_name_choose.replace("/", "\\")
-                os.system("copy " + file_name + " " + os.getcwd() + "\\res")
-            else:
-                os.system("cp " + file_name_choose + " " + os.getcwd() + "/res")
+            if file_name_choose != "":
+                if platform.system() == "Windows":
+                    file_name = file_name_choose.replace("/", "\\")
+                    os.system("copy " + file_name + " " + os.getcwd() + "\\res")
+                else:
+                    os.system("cp " + file_name_choose + " " + os.getcwd() + "/res")
+                file_name_choose = str(file_name_choose)
+                file_name = file_name_choose.split('/')
+                SubwayCache(file_name[len(file_name) - 1][:-4])
         except Exception as e:
             print("error", e)
-        file_name_choose = str(file_name_choose)
-        file_name = file_name_choose.split('/')
-        try:
-            SubwayCache(file_name[len(file_name) - 1][:-4])
-        except Exception as e:
-            print(e)
         self.sub_control.search_system()
         self.box_subway.clear()
         self.box_subway.addItems(self.sub_control.subway_dirs)
@@ -397,10 +398,17 @@ class Ui_MainWindow(object):
     def delete_system(self):
         self.sub_control.delete_pk()
         self.sub_control.search_system()
-        self.box_subway.clear()
-        self.tableView.clearSpans()
-        self.box_subway.addItems(self.sub_control.subway_dirs)
-        try:
-            self.changed_system()
-        except Exception as e:
-            print(e)
+        if len(self.sub_control.subway_dirs) > 0:
+            self.box_subway.clear()
+            self.box_subway.addItems(self.sub_control.subway_dirs)
+            try:
+                self.changed_system()
+            except Exception as e:
+                print(e)
+        else:
+            self.box_start_route.clear()
+            self.box_end_route.clear()
+            self.box_start_station.clear()
+            self.box_end_station.clear()
+            self.box_routes.clear()
+            self.box_subway.close()

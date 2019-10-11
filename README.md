@@ -9,5 +9,5 @@ show the shortest path to destination station by subway(the first project in SE 
 >- [x] design UI  
 >- [x] finished function to show routes information  
 >- [x] finished function to show best path to destination  
->- [ ] bug fix and optimize  
+>- [x] bug fix and optimize  
 
