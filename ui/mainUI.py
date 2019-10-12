@@ -162,16 +162,24 @@ class Ui_MainWindow(object):
         self.label_subway.setStyleSheet('''QLabel{font-size:27px;font-family:Roman times;}''')
         self.bt_whole_route.setStyleSheet(
             '''QPushButton{color:white;font-size:20px;background:#6DDF6D;border-radius:15px;}''')
-        self.box_routes.setStyleSheet(
-            '''QComboBox{color:white;font-size:20px;background:#6DDF6D;border-radius:10px;}''')
+
         self.bt_best_route.setStyleSheet('''QPushButton{color:white;background:#8CAECF;border-radius:10px;}''')
         self.label_start_pos.setStyleSheet('''QLabel{color:#7988CF;font-size:20px;font-family:Roman times;}''')
         self.label_end_pos.setStyleSheet('''QLabel{color:#7988CF;font-size:20px;font-family:Roman times;}''')
         self.bt_swap.setStyleSheet('''QPushButton{border-radius:15px;}''')
-        self.box_start_route.setStyleSheet('''QComboBox{color:white;background:#8CAECF;border-radius:12px;}''')
-        self.box_end_route.setStyleSheet('''QComboBox{color:white;background:#8CAECF;border-radius:12px;}''')
-        self.box_start_station.setStyleSheet('''QComboBox{color:white;background:#8CAECF;border-radius:15px;}''')
-        self.box_end_station.setStyleSheet('''QComboBox{color:white;background:#8CAECF;border-radius:15px;}''')
+        if platform.system() == "Windows":
+            self.box_start_route.setStyleSheet('''QComboBox{color:white;background:#8CAECF;border-radius:12px;}''')
+            self.box_end_route.setStyleSheet('''QComboBox{color:white;background:#8CAECF;border-radius:12px;}''')
+            self.box_start_station.setStyleSheet('''QComboBox{color:white;background:#8CAECF;border-radius:15px;}''')
+            self.box_end_station.setStyleSheet('''QComboBox{color:white;background:#8CAECF;border-radius:15px;}''')
+            self.box_routes.setStyleSheet(
+                '''QComboBox{color:white;font-size:20px;background:#6DDF6D;border-radius:10px;}''')
+        else:
+            self.box_start_route.setStyleSheet('''QComboBox{background:#8CAECF;border-radius:12px;}''')
+            self.box_end_route.setStyleSheet('''QComboBox{background:#8CAECF;border-radius:12px;}''')
+            self.box_start_station.setStyleSheet('''QComboBox{background:#8CAECF;border-radius:15px;}''')
+            self.box_end_station.setStyleSheet('''QComboBox{background:#8CAECF;border-radius:15px;}''')
+            self.box_routes.setStyleSheet('''QComboBox{font-size:20px;background:#6DDF6D;border-radius:10px;}''')
         self.tableView.setStyleSheet('''QTableView{background:#B5DFB7;}''')
         self.listView.setStyleSheet('''QListView{color:darkblue;background:#8CAECF;}''')
 
