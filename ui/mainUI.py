@@ -61,7 +61,7 @@ class Ui_MainWindow(object):
         self.bt_best_route.setFont(font)
         self.bt_best_route.setObjectName("bt_best_route")
         self.box_subway = QtWidgets.QComboBox(self.centralwidget)
-        self.box_subway.setGeometry(QtCore.QRect(640, 10, 110, 30))
+        self.box_subway.setGeometry(QtCore.QRect(640, 10, 110, 35))
         self.bt_best_route.clicked.connect(self.best_path)
 
         if len(self.sub_control.subway_dirs) > 0:
