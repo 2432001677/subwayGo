@@ -19,10 +19,11 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(900, 580)
-        MainWindow.setWindowOpacity(0.95)
+        MainWindow.setWindowOpacity(0.93)
+        MainWindow.setWindowFlag(QtCore.Qt.FramelessWindowHint)  # 隐藏边框
         pe = QtGui.QPalette()
         MainWindow.setAutoFillBackground(True)
-        pe.setColor(QtGui.QPalette.Window, QtCore.Qt.lightGray)
+        pe.setColor(QtGui.QPalette.Window, QtCore.Qt.white)
         MainWindow.setPalette(pe)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -150,11 +151,15 @@ class Ui_MainWindow(object):
         self.delete_subway = QtWidgets.QAction(MainWindow)
         self.delete_subway.setObjectName("delete_subway")
         self.delete_subway.triggered.connect(self.delete_system)
+        self.quitAction = QtWidgets.QAction(MainWindow)
+        self.quitAction.triggered.connect(QtWidgets.qApp.quit)
         self.menu.addAction(self.load_subway)
         self.menu.addAction(self.delete_subway)
+        self.menu.addAction(self.quitAction)
         self.menubar.addAction(self.menu.menuAction())
+
         self.box_subway.setStyleSheet('''QComboBox{background:#42A5F5;font-size:25px;}''')
-        self.label_subway.setStyleSheet('''QLabel{color:white;font-size:27px;font-family:Roman times;}''')
+        self.label_subway.setStyleSheet('''QLabel{font-size:27px;font-family:Roman times;}''')
         self.bt_whole_route.setStyleSheet(
             '''QPushButton{color:white;font-size:20px;background:#6DDF6D;border-radius:15px;}''')
         self.box_routes.setStyleSheet(
@@ -190,6 +195,24 @@ class Ui_MainWindow(object):
         self.menu.setTitle(_translate("MainWindow", "选项"))
         self.load_subway.setText(_translate("MainWindow", "加载地铁系统"))
         self.delete_subway.setText(_translate("MainWindow", "删除当前系统"))
+        self.quitAction.setText(_translate("MainWindow", "退出"))
+
+    # 重写函数实现窗口拖动
+    def mousePressEvent(self, event):
+        if event.button() == QtCore.Qt.LeftButton:
+            self.m_flag = True
+            self.m_Position = event.globalPos() - self.pos()  # 获取鼠标相对窗口的位置
+            event.accept()
+            self.setCursor(QtGui.QCursor(QtCore.Qt.OpenHandCursor))  # 更改鼠标图标
+
+    def mouseMoveEvent(self, QMouseEvent):
+        if QtCore.Qt.LeftButton and self.m_flag:
+            self.move(QMouseEvent.globalPos() - self.m_Position)  # 更改窗口位置
+            QMouseEvent.accept()
+
+    def mouseReleaseEvent(self, QMouseEvent):
+        self.m_flag = False
+        self.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
 
     def changed_system(self):  # 改变地铁系统
         self.box_start_route.clear()
