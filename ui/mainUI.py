@@ -196,6 +196,7 @@ class Ui_MainWindow(object):
         self.load_subway.setText(_translate("MainWindow", "加载地铁系统"))
         self.delete_subway.setText(_translate("MainWindow", "删除当前系统"))
         self.quitAction.setText(_translate("MainWindow", "退出"))
+        self.m_flag = False
 
     # 重写函数实现窗口拖动
     def mousePressEvent(self, event):
