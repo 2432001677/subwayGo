@@ -2,12 +2,12 @@ import csv
 
 
 def read_sub():  # 输入线路名，开通状态，站点
-    list = input().split()
-    return list[0], list[1], list[2:]
+    route = input().split()
+    return route[0], route[1], route[2:]
 
 
-def create_csv(name, sum_csv):
-    path = "../res/" + name + ".csv"
+def create_csv(filename, sum_csv):
+    path = "../res/" + filename + ".csv"
     with open(path, 'w', encoding="utf-8", newline='') as f:
         csv_write = csv.writer(f)
         for key in sum_csv:
@@ -20,8 +20,8 @@ if __name__ == '__main__':
     n = int(input("输入条数"))
     station_map = {}
     for i in range(n):
-        name, status, list = read_sub()
-        for j, sta in enumerate(list):
+        name, status, station = read_sub()
+        for j, sta in enumerate(station):
             if sta in station_map:
                 station_map[sta] += " " + name + "," + str(j) + "," + status
             else:

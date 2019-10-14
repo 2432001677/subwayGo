@@ -41,20 +41,17 @@ class SubwayControl:
                 if os.path.exists(path + i + "/lines.pk") and os.path.exists(path + i + "/stations.pk"):
                     subways.append(i)
         self.subway_dirs = subways
-        if len(self.subway_dirs)>0:
+        if len(self.subway_dirs) > 0:
             self.select_subway(0)
 
     def _find_shortest_station(self) -> str:
-        min = 9999
+        min_value = 9999
         min_s = ""
         for s in self.all_station:
-            if self.distance[s][1] == 0 and self.distance[s][0] < min:
+            if self.distance[s][1] == 0 and self.distance[s][0] < min_value:
                 min_s = s
-                min = self.distance[s][0]
+                min_value = self.distance[s][0]
         return min_s
-
-    def _get_same_route(self):
-        pass
 
     def best_path(self, start_station, end_station):
         res = []
