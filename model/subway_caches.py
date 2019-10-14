@@ -16,7 +16,7 @@ class SubwayCache:
         值为线路下的站点列表
         每个站点为一个元组(站点名,坐标,开通状态)
         '''
-        self.lines: dict[str:list[tuple[str, int, int]]]
+        self.lines: dict[str:list]
         self.lines = {}
 
         '''
@@ -25,7 +25,7 @@ class SubwayCache:
         列表嵌套列表表示同一站的不同线路
         每条线路包含一个线路名,对应一个元组(坐标,开通状态)
         '''
-        self.stations: dict[str:list[str, tuple[int, int]]]
+        self.stations: dict[str:list]
         self.stations = {}
 
         # 所有站点
@@ -90,7 +90,7 @@ class SubwayCache:
         all_lines = {}
         for (key, line) in self.stations.items():
             key: str
-            line: list[list[str, tuple[int, int]]]
+            line: list
             for i, t in enumerate(line):
                 t: list[str, tuple:int, int]
                 if t[0] not in all_lines:

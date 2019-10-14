@@ -69,8 +69,7 @@ class Station:  # 站点对象
                 else:
                     t = t if t > 0 else -t
                     if t < value:
-                        value = t
-                        self.min_line = line
+                        value, self.min_line = t, line
         return value
 
     def is_open(self) -> bool:
