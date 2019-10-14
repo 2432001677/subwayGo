@@ -13,10 +13,10 @@ class Route:
         return [x[0] for x in self.routes.get(self.routes_name[index])]
 
     def get_pos(self, index):
-        list = [str(x[1] + 1) for x in self.routes.get(self.routes_name[index])]
-        list[0] = "始"
-        list[-1] = "终"
-        return list
+        pos = [str(x[1] + 1) for x in self.routes.get(self.routes_name[index])]
+        pos[0] = "始"
+        pos[-1] = "终"
+        return pos
 
     def get_stations_name_status(self, index):
         return [(x[0], "是" if x[2] == 1 else "否") for x in self.routes.get(self.routes_name[index])]

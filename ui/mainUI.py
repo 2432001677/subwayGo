@@ -2,7 +2,6 @@
 
 #
 # Created by: PyQt5 UI code generator 5.13.0
-#
 import os
 import platform
 
