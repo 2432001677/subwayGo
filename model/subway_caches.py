@@ -105,12 +105,3 @@ class SubwayCache:
     def delete_cache(self):
         os.remove(os.getcwd() + "/res/" + self.name + "/stations.pk")
         os.remove(os.getcwd() + "/res/" + self.name + "/lines.pk")
-
-
-if __name__ == '__main__':
-    sub = SubwayCache("北京")
-    s = sub.get_station("西直门")
-    print(s.inf)
-    t = sub.get_station("安定门")
-    print(t.inf)
-    print(s - t)
