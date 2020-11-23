@@ -17,4 +17,13 @@ show the shortest path to destination station by subway(the first project in SE 
 >- [x] finished function to show routes information  
 >- [x] finished function to show best path to destination  
 >- [x] bug fix and optimize  
+
 ---
+
+# 介绍
+
+![main](images/main.png)
+
+支持从.csv格式导入地铁线路信息,查询地铁站点信息,查询最近距离路线
+
+![tianjing](images/tianjing.png)
